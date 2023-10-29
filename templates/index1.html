@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/> -->
+  <title>Loan Prediction</title>
+
+  <!-- CSS  -->
+  <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/> -->
+  <link rel="stylesheet" href ="css/style.css">
+</head>
+<body>
+    <div class="wrapper">
+        
+        <div class="form">
+            <h1 class="title">Loan Prediction</h1>
+
+            <form action="{{ url_for('predict')}}" method="post" class="myform">
+                <!--             
+                0    no_of_dependents  3415 non-null   int64
+                1    education         3415 non-null   int64
+                2    self_employed     3415 non-null   int64
+                3    income_annum      3415 non-null   int64
+                4    loan_amount       3415 non-null   int64
+                5    loan_term         3415 non-null   int64
+                6    cibil_score       3415 non-null   int64
+                7   Movable_assets     3415 non-null   int64
+                8   Immovable_assets   3415 non-null   int64 -->
+                <div class="control-from">
+                    <label for="no_of_dependencies">No Of Dependencies*</label>
+                    <select id="dependencies" name="dependencies" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>                 
+                </div>
+
+                <div class="control-from">
+                    <label for="education">Education*</label>
+                    <select id="education" name="education" required>
+                        <option value="1">Graduate</option>
+                        <option value="0">Not Graduate</option>
+                    </select> 
+                </div>
+
+                <div class="control-from">
+                    <label for="self_employed">Self Employed*</label>
+                    <select id="self_employed" name="self_employed" required>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select> 
+                </div>
+
+                <div class="control-from">
+                    <label for="incomeanumn">Income Anumn</label>
+                    <input type="text" id="incomeanumn" name="incomeanumn" value="" required>
+                </div>
+
+                <div class="full-width">
+                    <label for="loanammount">Loan Ammount</label>
+                    <input type="text" id="loanammount" name="loanammount" value="" required>
+                </div>
+
+                <div class="control-from">
+                    <label for="loanterm">Loan Term</label>
+                    <input type="text" id="loanterm" name="loanterm" value="" required>
+                </div>
+
+                <div class="control-from">
+                    <label for="cibilscore">Cibil Score</label>
+                    <input type="text" id="cibilscore" name="cibilscore" value="" required>
+                </div>
+
+                <div class="control-from">
+                    <label for="masset">Movable Asset</label>
+                    <input type="text" id="masset" name="masset" value="" required>
+                </div>
+
+                <div class="control-from">
+                    <label for="imasset">Immovable Asset</label>
+                    <input type="phone" id="imasset" name="imasset" value="" required>
+                </div>
+
+                <div class="button">
+                    <button id="register">Predict Probablity</button>
+                </div>
+            </form>
+            <br><h3>{{prediction_text}}<h3><br><br>
+        </div>
+    </div>
+    <style>
+        /* <.........................CSS............................>*/
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+    
+    
+            body {
+                width: 100vw;
+                height: 100vh;
+                font-family: 'Open sans';
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: rgba(57, 50, 173, 1)
+                /* overflow-x: hidden;
+                overflow-y: auto; */
+            }
+    
+            body>* {
+                margin: 0;
+                padding: 0;
+                box-sizing: inherit;
+            }
+    
+            .wrapper {
+                width: 700px;
+                background: #FFF;
+                border-radius: 10px;
+                box-shadow: 0 25px 70px rgba(0, 0, 0, .05);
+                /* overflow: hidden;  */
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+    
+            h1.title {
+                padding: 15px 0;
+                margin-left: 25px;
+                font-weight: normal;
+                color: rgba(57, 50, 173, 1);
+                text-align: center;
+            }
+    
+            .form {
+                width: 700px;
+            }
+    
+            .myform {
+                background: #F4F5F7;
+                padding: 25px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 25px
+            }
+    
+            .myform label {
+                display: block;
+                color: #A8AAC5;
+                font-weight: bold;
+                font-size: .8rem;
+                margin-bottom: 10px;
+            }
+    
+            .myform select {
+                border: 0;
+                outline: 0;
+                height: 50px;
+                background: #FFF;
+                width: 100%;
+                border-radius: 5px;
+                color: #155BDA;
+                font-weight: 700;
+                font-size: .9rem;
+                text-indent: 15px;
+                border: 2px solid transparent;
+                transition: border 250ms;
+            }
+    
+            .myform input {
+                border: 0;
+                outline: 0;
+                height: 50px;
+                background: #FFF;
+                width: 100%;
+                border-radius: 5px;
+                color: #155BDA;
+                font-weight: 700;
+                font-size: .9rem;
+                text-indent: 15px;
+                border: 2px solid transparent;
+                transition: border 250ms;
+            }
+    
+            .full-width {
+                grid-column: -1 / 1
+            }
+    
+            .button {
+                grid-column: -1 / 1;
+                display: flex;
+                justify-content: center;
+            }
+    
+            .button button {
+                border: 0;
+                outline: 0;
+                width: 120px;
+                height: 50px;
+                border-radius: 50px;
+                color: #FFF;
+                font-weight: bold;
+                font-size: .9rem;
+                cursor: pointer;
+                background: linear-gradient(356deg, rgba(57, 50, 173, 1) 0%, rgba(87, 50, 173, 1) 100%);
+            }
+    
+            .button button:hover {
+                background: rgba(57, 50, 173, 1);
+            }
+    
+      </style>
+</body>
