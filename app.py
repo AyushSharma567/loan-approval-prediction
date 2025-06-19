@@ -12,6 +12,10 @@ model = pickle.load(open('model.pkl', 'rb'))
 def home():
     return render_template('index1.html')
 
+@app.route('/analysis')
+def analysis():
+    return render_template('about.html')
+
             # 0    no_of_dependents  3415 non-null   int64
             # 1    education         3415 non-null   int64
             # 2    self_employed     3415 non-null   int64

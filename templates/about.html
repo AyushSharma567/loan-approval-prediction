@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>ML Process & Analysis | Loan Prediction System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2DD4BF;
+            --secondary-color: #14B8A6;
+            --background-color: #F8FAFC;
+            --text-color: #1F2937;
+            --label-color: #6B7280;
+            --border-color: #E2E8F0;
+            --excellent-color: #14B8A6;
+            --good-color: #3B82F6;
+            --fair-color: #EAB308;
+            --poor-color: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: var(--label-color);
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .process-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        .process-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .process-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .process-section h2 {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .process-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .text-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .text-content li {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .image-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            color: var(--label-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cibil-ranges {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .cibil-range {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cibil-range .range {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .cibil-range .rating {
+            font-weight: 500;
+        }
+
+        .cibil-range .impact {
+            color: var(--label-color);
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: var(--background-color);
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }        .cibil-analysis {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            max-width: 600px;
+        }
+
+        .cibil-range {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .range-left {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .cibil-range.excellent {
+            background: #E8FFF3;
+            border-left-color: #14B8A6;
+        }
+
+        .cibil-range.good {
+            background: #EFF6FF;
+            border-left-color: #3B82F6;
+        }
+
+        .cibil-range.fair {
+            background: #FEFCE8;
+            border-left-color: #EAB308;
+        }
+
+        .cibil-range.poor {
+            background: #FEF2F2;
+            border-left-color: #EF4444;
+        }
+
+        .cibil-range .score {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            min-width: 90px;
+        }
+
+        .cibil-range .label {
+            font-weight: 500;
+            color: var(--text-color);
+            min-width: 80px;
+        }
+
+        .cibil-range .chance {
+            color: var(--label-color);
+        }
+
+        .image-content.large img {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .process-content.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        .process-content.full-width .text-content {
+            margin-bottom: 2rem;
+        }
+
+        .cibil-section {
+            margin: 2rem 0;
+        }
+
+        .cibil-analysis {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .cibil-range {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+            transition: transform 0.2s ease;
+        }
+
+        .cibil-range:hover {
+            transform: translateX(5px);
+        }
+
+        .range-left {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .cibil-range.excellent {
+            background: #E8FFF3;
+            border-left-color: var(--excellent-color);
+        }
+
+        .cibil-range.good {
+            background: #EFF6FF;
+            border-left-color: var(--good-color);
+        }
+
+        .cibil-range.fair {
+            background: #FEFCE8;
+            border-left-color: var(--fair-color);
+        }
+
+        .cibil-range.poor {
+            background: #FEF2F2;
+            border-left-color: var(--poor-color);
+        }
+
+        .cibil-range .score {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            min-width: 90px;
+        }
+
+        .cibil-range .label {
+            font-weight: 500;
+            color: var(--text-color);
+            min-width: 80px;
+        }
+
+        .cibil-range .chance {
+            color: var(--label-color);
+        }
+
+        .cibil-graphs {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cibil-graphs img {
+            max-width: 80%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .process-content {
+                grid-template-columns: 1fr;
+            }
+
+            .image-content {
+                order: -1;
+            }
+
+            .hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .process-container {
+                padding: 1rem;
+            }
+
+            .cibil-range {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .decision-flow .step:not(:last-child)::after {
+                bottom: -1rem;
+            }
+
+            .cibil-graphs img {
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="nav-logo">LoanPredict</div>
+            <div class="nav-links">                <a href="/">Home</a>
+                <a href="/analysis" class="active">ML Analysis</a>
+                <!-- <a href="#">Contact</a> -->
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>How Our Loan Prediction Works</h1>
+        <p>Understanding the science behind our loan approval predictions</p>
+    </div>
+
+    <div class="main-content">
+        <div class="process-container">
+            <section class="process-section">
+                <h2>1. Data Collection and Processing</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <p>Our loan prediction system uses a comprehensive dataset that includes various factors:</p>
+                        <ul>
+                            <li>Number of Dependents</li>
+                            <li>Education Level</li>
+                            <li>Self-Employment Status</li>
+                            <li>Annual Income</li>
+                            <li>Loan Amount</li>
+                            <li>Loan Term</li>
+                            <li>CIBIL Score</li>
+                            <li>Movable Assets</li>
+                            <li>Immovable Assets</li>
+                        </ul>
+                        <p>We process this data through various stages to ensure accurate predictions.</p>
+                    </div>
+                    <div class="image-content">
+                        <img src="{{ url_for('static', filename='images/data_collection.png') }}" alt="Data Collection Process">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>2. Data Analysis and Insights</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <h3>Key Findings from Our Analysis:</h3>
+                        <ul>
+                            <li>CIBIL Score has a strong correlation with loan approval</li>
+                            <li>Higher income generally leads to better approval chances</li>
+                            <li>Asset values significantly impact loan decisions</li>
+                            <li>Education level plays a role in approval rates</li>
+                        </ul>
+                    </div>
+                    <div class="image-content">                        <img src="{{ url_for('static', filename='images/correlation_matrix.png') }}" alt="Data Correlation Matrix">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>3. Machine Learning Model</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <p>We tested multiple machine learning models:</p>
+                        <ul>
+                            <li>Logistic Regression</li>
+                            <li>Support Vector Classification</li>
+                            <li>Decision Tree Classification</li>
+                            <li>Random Forest Classification</li>
+                        </ul>
+                        <p>After thorough testing, the Decision Tree model was chosen for its superior accuracy and reliability.</p>
+                    </div>
+                    <div class="image-content">
+                        <img src="{{ url_for('static', filename='images/model_comparison.png') }}" alt="Model Comparison">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>4. Asset Analysis Impact</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <h3>Understanding Asset Evaluation:</h3>
+                        <ul>
+                            <li>Movable Assets: Bank accounts, vehicles, investments</li>
+                            <li>Immovable Assets: Real estate, land, commercial property</li>
+                            <li>Asset-to-Loan Ratio consideration</li>
+                            <li>Risk assessment based on asset quality</li>
+                        </ul>
+                        <div class="info-box">
+                            <p><strong>Key Insight:</strong> Higher asset values significantly improve loan approval chances, especially for larger loan amounts.</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img src="{{ url_for('static', filename='images/asset_analysis.png') }}" alt="Asset Distribution Analysis">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>5. Education and Employment Analysis</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <h3>Impact on Loan Approval:</h3>
+                        <ul>
+                            <li>Education level affects credit assessment</li>
+                            <li>Employment status influences income stability</li>
+                            <li>Combined effect on risk profile</li>
+                            <li>Statistical correlation with approval rates</li>
+                        </ul>
+                        <div class="info-box">
+                            <p><strong>Statistical Evidence:</strong> Graduate applicants show higher approval rates, while self-employment status shows varied impacts based on income stability.</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img src="{{ url_for('static', filename='images/education_employment_impact.png') }}" alt="Education and Employment Impact">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>6. Income and Loan Relationship</h2>
+                <div class="process-content">
+                    <div class="text-content">
+                        <h3>Income Analysis Factors:</h3>
+                        <ul>
+                            <li>Income to Loan Amount Ratio</li>
+                            <li>CIBIL Score Correlation</li>
+                            <li>Repayment Capacity Assessment</li>
+                            <li>Risk Level Determination</li>
+                        </ul>
+                        <div class="info-box">
+                            <p><strong>Analysis:</strong> Higher income levels generally support larger loan amounts, but CIBIL scores play a crucial role in final approval.</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <img src="{{ url_for('static', filename='images/income_loan_analysis.png') }}" alt="Income vs Loan Analysis">
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>7. CIBIL Score Impact</h2>
+                <div class="process-content">
+                    <div class="text-content full-width">
+                        <h3>CIBIL Score Ranges:</h3>
+                        <div class="cibil-analysis">
+                            <div class="cibil-range excellent">
+                                <div class="range-left">
+                                    <span class="score">750-900</span>
+                                    <span class="label">Excellent</span>
+                                </div>
+                                <span class="chance">High Approval Chance</span>
+                            </div>
+                            <div class="cibil-range good">
+                                <div class="range-left">
+                                    <span class="score">700-749</span>
+                                    <span class="label">Good</span>
+                                </div>
+                                <span class="chance">Good Approval Chance</span>
+                            </div>
+                            <div class="cibil-range fair">
+                                <div class="range-left">
+                                    <span class="score">650-699</span>
+                                    <span class="label">Fair</span>
+                                </div>
+                                <span class="chance">Moderate Chance</span>
+                            </div>
+                            <div class="cibil-range poor">
+                                <div class="range-left">
+                                    <span class="score">300-649</span>
+                                    <span class="label">Poor</span>
+                                </div>
+                                <span class="chance">Low Approval Chance</span>
+                            </div>
+                        </div>
+                        <div class="cibil-graphs">
+                            <div class="graph-container">
+                                <img src="{{ url_for('static', filename='images/cibil_analysis.png') }}" alt="CIBIL Score Analysis">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="process-section">
+                <h2>8. Decision Tree Model</h2>
+                <div class="process-content full-width">
+                    <div class="text-content"></div>
+                        <h3>How Our Model Makes Decisions:</h3>
+                        <p>Our decision tree model processes all input factors through a series of logical decisions to determine loan approval probability. The visualization below shows a simplified version of our decision-making process.</p>
+                    </div>
+                    <div class="image-content large">
+                        <img src="{{ url_for('static', filename='images/decision_tree.png') }}" alt="Decision Tree Model">
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 LoanPredict. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <style>
+        :root {
+            --primary-color: #2DD4BF;
+            --secondary-color: #14B8A6;
+            --background-color: #F8FAFC;
+            --text-color: #1F2937;
+            --label-color: #6B7280;
+            --border-color: #E2E8F0;
+            --excellent-color: #14B8A6;
+            --good-color: #3B82F6;
+            --fair-color: #EAB308;
+            --poor-color: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            color: var(--label-color);
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .process-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        .process-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .process-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .process-section h2 {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .process-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .text-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .text-content li {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .image-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: white;
+            padding: 2rem;
+            text-align: center;
+            color: var(--label-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cibil-ranges {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .cibil-range {
+            background: var(--background-color);
+            padding: 1rem;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .cibil-range .range {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .cibil-range .rating {
+            font-weight: 500;
+        }
+
+        .cibil-range .impact {
+            color: var(--label-color);
+            font-size: 0.9rem;
+        }
+
+        .info-box {
+            background: var(--background-color);
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }        .cibil-analysis {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            max-width: 600px;
+        }
+
+        .cibil-range {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .range-left {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .cibil-range.excellent {
+            background: #E8FFF3;
+            border-left-color: #14B8A6;
+        }
+
+        .cibil-range.good {
+            background: #EFF6FF;
+            border-left-color: #3B82F6;
+        }
+
+        .cibil-range.fair {
+            background: #FEFCE8;
+            border-left-color: #EAB308;
+        }
+
+        .cibil-range.poor {
+            background: #FEF2F2;
+            border-left-color: #EF4444;
+        }
+
+        .cibil-range .score {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            min-width: 90px;
+        }
+
+        .cibil-range .label {
+            font-weight: 500;
+            color: var(--text-color);
+            min-width: 80px;
+        }
+
+        .cibil-range .chance {
+            color: var(--label-color);
+        }
+
+        .image-content.large img {
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .process-content.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        .process-content.full-width .text-content {
+            margin-bottom: 2rem;
+        }
+
+        .cibil-section {
+            margin: 2rem 0;
+        }
+
+        .cibil-analysis {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .cibil-range {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+            transition: transform 0.2s ease;
+        }
+
+        .cibil-range:hover {
+            transform: translateX(5px);
+        }
+
+        .range-left {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .cibil-range.excellent {
+            background: #E8FFF3;
+            border-left-color: var(--excellent-color);
+        }
+
+        .cibil-range.good {
+            background: #EFF6FF;
+            border-left-color: var(--good-color);
+        }
+
+        .cibil-range.fair {
+            background: #FEFCE8;
+            border-left-color: var(--fair-color);
+        }
+
+        .cibil-range.poor {
+            background: #FEF2F2;
+            border-left-color: var(--poor-color);
+        }
+
+        .cibil-range .score {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            min-width: 90px;
+        }
+
+        .cibil-range .label {
+            font-weight: 500;
+            color: var(--text-color);
+            min-width: 80px;
+        }
+
+        .cibil-range .chance {
+            color: var(--label-color);
+        }
+
+        .cibil-graphs {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cibil-graphs img {
+            max-width: 80%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .process-content {
+                grid-template-columns: 1fr;
+            }
+
+            .image-content {
+                order: -1;
+            }
+
+            .hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .process-container {
+                padding: 1rem;
+            }
+
+            .cibil-range {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .decision-flow .step:not(:last-child)::after {
+                bottom: -1rem;
+            }
+
+            .cibil-graphs img {
+                max-width: 95%;
+            }
+        }
+    </style>
+</body>
+</html>
