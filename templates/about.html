@@ -353,6 +353,37 @@
             margin: 0 auto;
         }
 
+        .workflow-section {
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .workflow-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 2rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-description {
+            text-align: left;
+            margin-top: 1.5rem;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
         @media (max-width: 768px) {
             .process-content {
                 grid-template-columns: 1fr;
@@ -403,6 +434,23 @@
     <div class="hero">
         <h1>How Our Loan Prediction Works</h1>
         <p>Understanding the science behind our loan approval predictions</p>
+    </div>
+
+    <div class="workflow-section">
+        <div class="workflow-container">
+            <h2>Loan Prediction System Workflow</h2>
+            <img src="{{ url_for('static', filename='images/image.png') }}" alt="Loan Prediction Workflow" class="workflow-image">
+            <div class="workflow-description">
+                <p>Our loan prediction system follows a comprehensive workflow that ensures accurate and reliable predictions:</p>
+                <ul>
+                    <li><strong>Data Collection:</strong> Gathering information from applicants and banking records</li>
+                    <li><strong>Data Processing:</strong> Cleaning and preparing data for analysis</li>
+                    <li><strong>Algorithm Selection:</strong> Comparing multiple ML algorithms including Logistic Regression, SVM, Decision Trees, and Random Forest</li>
+                    <li><strong>Model Implementation:</strong> Deploying the best-performing model using Flask</li>
+                    <li><strong>Prediction Generation:</strong> Providing real-time loan approval predictions based on input data</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="main-content">
@@ -943,6 +991,37 @@
             max-width: 80%;
             height: auto;
             margin: 0 auto;
+        }
+
+        .workflow-section {
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .workflow-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 2rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-description {
+            text-align: left;
+            margin-top: 1.5rem;
+            color: var(--text-color);
+            line-height: 1.6;
         }
 
         @media (max-width: 768px) {
